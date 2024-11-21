@@ -59,6 +59,7 @@ jobs:
         (github.event.review.author_association == 'OWNER' || github.event.review.author_association == 'COLLABORATOR' || github.event.review.author_association == 'MEMBER')
         )
       )
+    environments: OPENHANDS
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
