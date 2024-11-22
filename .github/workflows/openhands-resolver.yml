@@ -2,19 +2,12 @@ name: Auto-Fix Tagged Issue with OpenHands
 
 on:
   workflow_call:
-    secrets:
-      LLM_MODEL:
+    inputs:
+      environment:
+        type: string
+        description: Environmets from which to get secrets
         required: true
-      LLM_API_KEY:
-        required: true
-      LLM_BASE_URL:
-        required: false
-      PAT_TOKEN:
-        required: true
-      PAT_USERNAME:
-        required: true
-      ENV_CONFIG:
-        required: false
+        default: OPENHANDS
 
   issues:
     types: [labeled]
@@ -34,7 +27,7 @@ permissions:
 
 jobs:
   auto-fix:
-    environment: OPENHANDS
+    environment: ${{ inputs.environment }}
     if: |
       github.event_name == 'workflow_call' ||
       github.event.label.name == 'fix-me' ||
