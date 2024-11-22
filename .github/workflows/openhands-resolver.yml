@@ -3,7 +3,7 @@ name: Auto-Fix Tagged Issue with OpenHands
 on:
   workflow_call:
     secrets:
-      ENV_CONFIG:
+      ENV_SECRETS:
         required: true
     inputs:
       max_iterations:
@@ -62,7 +62,7 @@ jobs:
 
       - name: Load environment
         env:
-          ENV_CONFIG: ${{ secrets.ENV_CONFIG }}
+          ENV_CONFIG: ${{ secrets.ENV_SECRETS }}
         run: |
           if [ -n "$ENV_CONFIG" ]; then
               secrets=$(echo "$ENV_CONFIG" | jq 'with_entries(select(.key | startswith("OPENHANDS_ENV_")))')
