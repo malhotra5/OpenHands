@@ -62,7 +62,7 @@ jobs:
 
       - name: Load environment
         env:
-          ENV_CONFIG: ${{ env.ENV_SECRETS }}
+          ENV_CONFIG: ${{ secrets.ENV_SECRETS }}
         run: |
           if [ -n "$ENV_CONFIG" ]; then
               echo "$ENV_CONFIG" | jq -r '
