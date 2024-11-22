@@ -65,20 +65,16 @@ jobs:
           ENV_CONFIG: ${{ secrets.ENV_SECRETS }}
         run: |
           if [ -n "$ENV_CONFIG" ]; then
-              secrets=$(echo "$ENV_CONFIG" | jq 'with_entries(select(.key | startswith("OPENHANDS_ENV_")))')
-              sanitized_secrets=$(echo "$secrets" | jq -c .)
-
-              # Extract and process key-value pairs
-              echo "$sanitized_secrets" | jq -r '
+              echo "$ENV_CONFIG" | jq -r '
                 to_entries |
                 .[] |
-                "\(.key | sub("^OPENHANDS_ENV_"; "SANDBOX_ENV_"))=\(.value)"
-              ' | while IFS="=" read -r new_key new_value; do
-                  # Mask the new value
-                  echo "::add-mask::$new_value"
+                "\(.key)=\(.value)"
+              ' | while IFS="=" read -r key value; do
+                  # Mask the value to ensure it's not printed in logs
+                  echo "::add-mask::$value"
 
-                  # Add to $GITHUB_ENV
-                  echo "$new_key=$new_value" >> "$GITHUB_ENV"
+                  # Add the key-value pair to the environment
+                  echo "$key=$value" >> "$GITHUB_ENV"
               done
           fi
 
